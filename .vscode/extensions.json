@@ -1,8 +1,9 @@
 {
-    "recommendations": [
-        "vitest.explorer",
-        "yoavbls.pretty-ts-errors",
-        "million.million-lint",
-        "dbaeumer.vscode-eslint"
-    ]
+  "recommendations": [
+    "vitest.explorer",
+    "yoavbls.pretty-ts-errors",
+    "million.million-lint",
+    "dbaeumer.vscode-eslint",
+    "biomejs.biome"
+  ]
 }
