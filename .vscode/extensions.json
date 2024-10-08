@@ -1,0 +1,8 @@
+{
+    "recommendations": [
+        "vitest.explorer",
+        "yoavbls.pretty-ts-errors",
+        "million.million-lint",
+        "dbaeumer.vscode-eslint"
+    ]
+}
