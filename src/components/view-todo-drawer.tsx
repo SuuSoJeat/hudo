@@ -17,7 +17,9 @@ import { handleError } from "@/utils/error-handler";
 import { Pencil, Trash } from "lucide-react";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
+import { DeleteTodoConfirmation } from "./delete-todo-confirmation";
 import { EditTodoDrawer } from "./edit-todo-drawer";
+
 import { Button } from "./ui/button";
 import { Checkbox } from "./ui/checkbox";
 
@@ -88,15 +90,16 @@ export const ViewTodoDrawer: React.FC<TodoDrawerProps> = ({
                 <Pencil className="w-4 h-4 mr-2" />
                 Edit
               </Button>
-              <Button
-                size="sm"
-                variant="outline"
-                onClick={handleDelete}
-                className="text-destructive border-destructive"
-              >
-                <Trash className="w-4 h-4 mr-2" />
-                Delete
-              </Button>
+              <DeleteTodoConfirmation onDelete={handleDelete}>
+                <Button
+                  size="sm"
+                  variant="outline"
+                  className="text-destructive border-destructive"
+                >
+                  <Trash className="w-4 h-4 mr-2" />
+                  Delete
+                </Button>
+              </DeleteTodoConfirmation>
             </div>
             <DrawerDescription className="sr-only">
               View the details of your todo item
