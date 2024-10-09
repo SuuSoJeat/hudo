@@ -1,3 +1,9 @@
+![License](https://img.shields.io/badge/license-MIT-brightgreen.svg)
+![Lighthouse Performance](https://img.shields.io/badge/Performance-100-green)
+![Lighthouse Accessibility](https://img.shields.io/badge/Accessibility-92-green)
+![Lighthouse Best Practices](https://img.shields.io/badge/Best%20Practices-100-green)
+![Lighthouse SEO](https://img.shields.io/badge/SEO-100-green)
+
 # HuDo
 
 HuDo is a collaborative task management application designed for advancing human knowledge. It provides a simple and intuitive interface for managing todos with real-time updates.
