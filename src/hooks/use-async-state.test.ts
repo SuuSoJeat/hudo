@@ -45,4 +45,18 @@ describe("useAsyncState", () => {
     expect(result.current.error).toBeNull();
     expect(result.current.isError).toBe(false);
   });
+
+  it("should reset state with custom initial loading", () => {
+    const { result } = renderHook(() => useAsyncState<string>());
+    act(() => {
+      result.current.setLoading(true);
+      result.current.setError("Test error");
+    });
+    act(() => {
+      result.current.reset(true);
+    });
+    expect(result.current.isLoading).toBe(true);
+    expect(result.current.error).toBeNull();
+    expect(result.current.isError).toBe(false);
+  });
 });

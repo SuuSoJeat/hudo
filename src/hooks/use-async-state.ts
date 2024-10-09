@@ -8,7 +8,7 @@ interface AsyncState<E = Error> {
 type AsyncAction<E = Error> =
   | { type: "SET_LOADING"; payload: boolean }
   | { type: "SET_ERROR"; payload: E | null }
-  | { type: "RESET" };
+  | { type: "RESET"; payload?: boolean };
 
 function asyncReducer<E = Error>(
   state: AsyncState<E>,
@@ -20,7 +20,7 @@ function asyncReducer<E = Error>(
     case "SET_ERROR":
       return { ...state, error: action.payload };
     case "RESET":
-      return { isLoading: false, error: null };
+      return { isLoading: action.payload ?? false, error: null };
     default:
       return state;
   }
@@ -47,8 +47,8 @@ export function useAsyncState<E = Error>(initialLoading = false) {
     dispatch({ type: "SET_ERROR", payload: error });
   }, []);
 
-  const reset = useCallback(() => {
-    dispatch({ type: "RESET" });
+  const reset = useCallback((initialLoading?: boolean) => {
+    dispatch({ type: "RESET", payload: initialLoading });
   }, []);
 
   return {
