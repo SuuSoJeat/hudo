@@ -7,8 +7,8 @@ import {
   DrawerHeader,
   DrawerTitle,
 } from "@/components/ui/drawer";
-import { deleteToDo, subscribeToDoDoc } from "@/services/todo-service";
-import type { ToDo } from "@/types/todo";
+import { deleteTodo, subscribeTodoDoc } from "@/services/todo-service";
+import type { Todo } from "@/types/todo";
 import { handleError } from "@/utils/error-handler";
 import { Pencil, Trash } from "lucide-react";
 import { useEffect, useState } from "react";
@@ -21,7 +21,7 @@ import { Button } from "./ui/button";
 import { Checkbox } from "./ui/checkbox";
 
 type TodoDrawerProps = {
-  todo: ToDo;
+  todo: Todo;
   isOpen: boolean;
   onClose: () => void;
 };
@@ -32,11 +32,11 @@ export const ViewTodoDrawer: React.FC<TodoDrawerProps> = ({
   onClose,
 }) => {
   const [isEditing, setIsEditing] = useState(false);
-  const [liveTodo, setLiveTodo] = useState<ToDo>(todo);
+  const [liveTodo, setLiveTodo] = useState<Todo>(todo);
   const { toggleStatus, isToggling } = useToggleTodoStatus();
 
   useEffect(() => {
-    const unsubscribe = subscribeToDoDoc(
+    const unsubscribe = subscribeTodoDoc(
       todo.id,
       (data) => {
         if (!data) return;
@@ -53,7 +53,7 @@ export const ViewTodoDrawer: React.FC<TodoDrawerProps> = ({
 
   const handleDelete = () => {
     try {
-      deleteToDo(liveTodo.id);
+      deleteTodo(liveTodo.id);
       toast.success("Todo deleted", {
         description: "Task successfully removed from your list.",
       });

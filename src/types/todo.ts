@@ -1,13 +1,13 @@
 import { z } from "zod";
 
-export const toDoSchema = z.object({
+export const todoSchema = z.object({
   title: z.string().min(1, "Title must not be empty"),
   description: z.string().optional(),
   status: z.enum(["completed", "incomplete"] as const),
 });
 
-export type ToDoData = z.infer<typeof toDoSchema>;
+export type TodoData = z.infer<typeof todoSchema>;
 
-export type ToDo = ToDoData & { id: string };
+export type Todo = TodoData & { id: string };
 
-export type TodoFilter = ToDo["status"] | null;
+export type TodoFilter = Todo["status"] | null;

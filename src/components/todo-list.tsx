@@ -1,6 +1,6 @@
 "use client";
 
-import type { ToDo } from "@/types/todo";
+import type { Todo } from "@/types/todo";
 import { useCallback, useMemo, useState } from "react";
 import { TodoItem } from "./todo-item";
 import { VirtualizedList } from "./virtualized-list";
@@ -14,10 +14,10 @@ import { ViewTodoDrawer } from "./view-todo-drawer";
 
 export function TodoList() {
   const { todos, isLoading, isError, error } = useLiveTodos();
-  const [selectedTodo, setSelectedTodo] = useState<ToDo | null>(null);
+  const [selectedTodo, setSelectedTodo] = useState<Todo | null>(null);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
-  const handleTodoClick = useCallback((todo: ToDo) => {
+  const handleTodoClick = useCallback((todo: Todo) => {
     setSelectedTodo(todo);
     setIsDrawerOpen(true);
   }, []);
@@ -31,7 +31,7 @@ export function TodoList() {
     return 69;
   };
 
-  const memoizedRenderItem = (todo: ToDo) => (
+  const memoizedRenderItem = (todo: Todo) => (
     <TodoItem key={todo.id} todo={todo} onClick={handleTodoClick} />
   );
 

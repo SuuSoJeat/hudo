@@ -1,17 +1,17 @@
-import type { ToDo, TodoFilter, toDoSchema } from "@/types/todo";
+import type { Todo, TodoFilter, todoSchema } from "@/types/todo";
 import { FirestoreOperationError, ValidationError } from "@/utils/errors";
 import type { DataWithId } from "@/utils/zod-schema";
 import { where } from "firebase/firestore";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import {
-  addToDo,
-  deleteToDo,
+  addTodo,
+  deleteTodo,
   getQueryConstraintsForTodoFilter,
-  getToDos,
-  subscribeToDoCol,
-  subscribeToDoDoc,
+  getTodos,
+  subscribeTodoCol,
+  subscribeTodoDoc,
   toggleTodoStatus,
-  updateToDo,
+  updateTodo,
 } from "./todo-service";
 
 vi.mock("./firestore-service", () => ({
@@ -39,79 +39,79 @@ describe("todoService", () => {
     vi.clearAllMocks();
   });
 
-  describe("addToDo", () => {
+  describe("addTodo", () => {
     it("should add a new todo successfully", async () => {
       const newTodo = { title: "Test Todo", status: "incomplete" } as const;
       const expectedId = "mockedId";
 
-      vi.mocked(addToDo).mockResolvedValue(expectedId);
+      vi.mocked(addTodo).mockResolvedValue(expectedId);
 
-      const result = await addToDo(newTodo);
+      const result = await addTodo(newTodo);
 
       expect(result).toBe(expectedId);
-      expect(addToDo).toHaveBeenCalledWith(newTodo);
+      expect(addTodo).toHaveBeenCalledWith(newTodo);
     });
 
     it("should handle errors when adding a todo", async () => {
       const newTodo = { title: "Test Todo", status: "incomplete" } as const;
       const errorMessage = "Failed to add todo";
 
-      vi.mocked(addToDo).mockRejectedValue(
+      vi.mocked(addTodo).mockRejectedValue(
         new FirestoreOperationError("add", errorMessage),
       );
 
-      await expect(addToDo(newTodo)).rejects.toThrow(FirestoreOperationError);
-      await expect(addToDo(newTodo)).rejects.toThrow(errorMessage);
+      await expect(addTodo(newTodo)).rejects.toThrow(FirestoreOperationError);
+      await expect(addTodo(newTodo)).rejects.toThrow(errorMessage);
     });
 
     it("should handle validation errors", async () => {
-      const invalidTodo = { title: "", status: "invalid" } as unknown as ToDo;
+      const invalidTodo = { title: "", status: "invalid" } as unknown as Todo;
       const errorMessage = "Invalid todo data";
 
-      vi.mocked(addToDo).mockRejectedValue(new ValidationError(errorMessage));
+      vi.mocked(addTodo).mockRejectedValue(new ValidationError(errorMessage));
 
-      await expect(addToDo(invalidTodo)).rejects.toThrow(ValidationError);
-      await expect(addToDo(invalidTodo)).rejects.toThrow(errorMessage);
+      await expect(addTodo(invalidTodo)).rejects.toThrow(ValidationError);
+      await expect(addTodo(invalidTodo)).rejects.toThrow(errorMessage);
     });
   });
 
-  describe("getToDos", () => {
+  describe("getTodos", () => {
     it("should get all todos successfully", async () => {
-      const mockTodos: DataWithId<typeof toDoSchema>[] = [
+      const mockTodos: DataWithId<typeof todoSchema>[] = [
         { id: "1", title: "Todo 1", status: "incomplete" },
         { id: "2", title: "Todo 2", status: "completed" },
       ];
 
-      vi.mocked(getToDos).mockResolvedValue(mockTodos);
+      vi.mocked(getTodos).mockResolvedValue(mockTodos);
 
-      const result = await getToDos();
+      const result = await getTodos();
 
       expect(result).toEqual(mockTodos);
-      expect(getToDos).toHaveBeenCalled();
+      expect(getTodos).toHaveBeenCalled();
     });
 
     it("should handle errors when getting todos", async () => {
       const errorMessage = "Failed to get todos";
 
-      vi.mocked(getToDos).mockRejectedValue(
+      vi.mocked(getTodos).mockRejectedValue(
         new FirestoreOperationError("getAll", errorMessage),
       );
 
-      await expect(getToDos()).rejects.toThrow(FirestoreOperationError);
-      await expect(getToDos()).rejects.toThrow(errorMessage);
+      await expect(getTodos()).rejects.toThrow(FirestoreOperationError);
+      await expect(getTodos()).rejects.toThrow(errorMessage);
     });
   });
 
-  describe("updateToDo", () => {
+  describe("updateTodo", () => {
     it("should update a todo successfully", async () => {
       const todoId = "1";
       const updateData = { title: "Updated Todo" };
 
-      vi.mocked(updateToDo).mockResolvedValue(undefined);
+      vi.mocked(updateTodo).mockResolvedValue(undefined);
 
-      await updateToDo(todoId, updateData);
+      await updateTodo(todoId, updateData);
 
-      expect(updateToDo).toHaveBeenCalledWith(todoId, updateData);
+      expect(updateTodo).toHaveBeenCalledWith(todoId, updateData);
     });
 
     it("should handle errors when updating a todo", async () => {
@@ -119,103 +119,103 @@ describe("todoService", () => {
       const updateData = { title: "Updated Todo" };
       const errorMessage = "Failed to update todo";
 
-      vi.mocked(updateToDo).mockRejectedValue(
+      vi.mocked(updateTodo).mockRejectedValue(
         new FirestoreOperationError("update", errorMessage),
       );
 
-      await expect(updateToDo(todoId, updateData)).rejects.toThrow(
+      await expect(updateTodo(todoId, updateData)).rejects.toThrow(
         FirestoreOperationError,
       );
-      await expect(updateToDo(todoId, updateData)).rejects.toThrow(
+      await expect(updateTodo(todoId, updateData)).rejects.toThrow(
         errorMessage,
       );
     });
   });
 
-  describe("deleteToDo", () => {
+  describe("deleteTodo", () => {
     it("should delete a todo successfully", async () => {
       const todoId = "1";
 
-      vi.mocked(deleteToDo).mockResolvedValue(undefined);
+      vi.mocked(deleteTodo).mockResolvedValue(undefined);
 
-      await deleteToDo(todoId);
+      await deleteTodo(todoId);
 
-      expect(deleteToDo).toHaveBeenCalledWith(todoId);
+      expect(deleteTodo).toHaveBeenCalledWith(todoId);
     });
 
     it("should handle errors when deleting a todo", async () => {
       const todoId = "1";
       const errorMessage = "Failed to delete todo";
 
-      vi.mocked(deleteToDo).mockRejectedValue(
+      vi.mocked(deleteTodo).mockRejectedValue(
         new FirestoreOperationError("remove", errorMessage),
       );
 
-      await expect(deleteToDo(todoId)).rejects.toThrow(FirestoreOperationError);
-      await expect(deleteToDo(todoId)).rejects.toThrow(errorMessage);
+      await expect(deleteTodo(todoId)).rejects.toThrow(FirestoreOperationError);
+      await expect(deleteTodo(todoId)).rejects.toThrow(errorMessage);
     });
   });
 
-  describe("subscribeToDoCol", () => {
+  describe("subscribeTodoCol", () => {
     it("should subscribe to todos successfully", () => {
       const onData = vi.fn();
       const onError = vi.fn();
       const unsubscribe = vi.fn();
 
-      vi.mocked(subscribeToDoCol).mockReturnValue(unsubscribe);
+      vi.mocked(subscribeTodoCol).mockReturnValue(unsubscribe);
 
-      const result = subscribeToDoCol(onData, onError);
+      const result = subscribeTodoCol(onData, onError);
 
       expect(result).toBe(unsubscribe);
-      expect(subscribeToDoCol).toHaveBeenCalledWith(onData, onError);
+      expect(subscribeTodoCol).toHaveBeenCalledWith(onData, onError);
     });
   });
 
-  describe("subscribeToDoDoc", () => {
+  describe("subscribeTodoDoc", () => {
     it("should subscribe to a specific todo document", () => {
       const todoId = "123";
       const onData = vi.fn();
       const onError = vi.fn();
       const unsubscribe = vi.fn();
 
-      vi.mocked(subscribeToDoDoc).mockReturnValue(unsubscribe);
+      vi.mocked(subscribeTodoDoc).mockReturnValue(unsubscribe);
 
-      const result = subscribeToDoDoc(todoId, onData, onError);
+      const result = subscribeTodoDoc(todoId, onData, onError);
 
       expect(result).toBe(unsubscribe);
-      expect(subscribeToDoDoc).toHaveBeenCalledWith(todoId, onData, onError);
+      expect(subscribeTodoDoc).toHaveBeenCalledWith(todoId, onData, onError);
     });
   });
 
   describe("toggleTodoStatus", () => {
     it("should toggle todo status from incomplete to completed", async () => {
       const todoId = "1";
-      const currentStatus: ToDo["status"] = "incomplete";
+      const currentStatus: Todo["status"] = "incomplete";
 
-      vi.mocked(updateToDo).mockResolvedValue(undefined);
+      vi.mocked(updateTodo).mockResolvedValue(undefined);
 
       await toggleTodoStatus(todoId, currentStatus);
 
-      expect(updateToDo).toHaveBeenCalledWith(todoId, { status: "completed" });
+      expect(updateTodo).toHaveBeenCalledWith(todoId, { status: "completed" });
     });
 
     it("should toggle todo status from completed to incomplete", async () => {
       const todoId = "1";
-      const currentStatus: ToDo["status"] = "completed";
+      const currentStatus: Todo["status"] = "completed";
 
-      vi.mocked(updateToDo).mockResolvedValue(undefined);
+      vi.mocked(updateTodo).mockResolvedValue(undefined);
 
       await toggleTodoStatus(todoId, currentStatus);
 
-      expect(updateToDo).toHaveBeenCalledWith(todoId, { status: "incomplete" });
+      expect(updateTodo).toHaveBeenCalledWith(todoId, { status: "incomplete" });
     });
 
     it("should handle errors when toggling todo status", async () => {
       const todoId = "1";
-      const currentStatus: ToDo["status"] = "incomplete";
+      const currentStatus: Todo["status"] = "incomplete";
       const errorMessage = "Failed to toggle todo status";
 
-      vi.mocked(updateToDo).mockRejectedValue(
+      vi.mocked(updateTodo).mockRejectedValue(
         new FirestoreOperationError("update", errorMessage),
       );
 

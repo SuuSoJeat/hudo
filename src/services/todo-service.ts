@@ -1,5 +1,5 @@
 import { db } from "@/lib/firebase";
-import { type ToDo, type TodoFilter, toDoSchema } from "@/types/todo";
+import { type Todo, type TodoFilter, todoSchema } from "@/types/todo";
 import { FirestoreOperationError, ValidationError } from "@/utils/errors";
 import { type QueryConstraint, where } from "firebase/firestore";
 import { createFirestoreService } from "./firestore-service";
@@ -15,16 +15,16 @@ const incompleteTodosQuery: QueryConstraint[] = [
 const todoService = createFirestoreService({
   db,
   collectionName: "todos",
-  schema: toDoSchema,
+  schema: todoSchema,
 });
 
 export const {
-  subscribeCol: subscribeToDoCol,
-  subscribeDoc: subscribeToDoDoc,
-  getAll: getToDos,
-  add: addToDo,
-  update: updateToDo,
-  remove: deleteToDo,
+  subscribeCol: subscribeTodoCol,
+  subscribeDoc: subscribeTodoDoc,
+  getAll: getTodos,
+  add: addTodo,
+  update: updateTodo,
+  remove: deleteTodo,
 } = todoService;
 
 /**
@@ -53,12 +53,12 @@ export function getQueryConstraintsForTodoFilter(
  */
 export async function toggleTodoStatus(
   id: string,
-  currentStatus: ToDo["status"],
+  currentStatus: Todo["status"],
 ): Promise<void> {
   try {
-    const newStatus: ToDo["status"] =
+    const newStatus: Todo["status"] =
       currentStatus === "completed" ? "incomplete" : "completed";
-    await updateToDo(id, { status: newStatus });
+    await updateTodo(id, { status: newStatus });
   } catch (error) {
     if (
       error instanceof ValidationError ||
@@ -75,24 +75,24 @@ export async function toggleTodoStatus(
 
 // Example: Subscribing to completed todos
 // export function subscribeToCompletedTodos(
-//   onData: (items: ToDo[]) => void,
+//   onData: (items: Todo[]) => void,
 //   onError: (error: FirestoreOperationError | ValidationError) => void,
 // ): () => void {
-//   return subscribeToToDos(onData, onError, completedTodosQuery);
+//   return subscribeToTodos(onData, onError, completedTodosQuery);
 // }
 
 // Example: Subscribing to incomplete todos
 // export function subscribeToIncompleteTodos(
-//   onData: (items: ToDo[]) => void,
+//   onData: (items: Todo[]) => void,
 //   onError: (error: FirestoreOperationError | ValidationError) => void,
 // ): () => void {
-//   return subscribeToToDos(onData, onError, incompleteTodosQuery);
+//   return subscribeToTodos(onData, onError, incompleteTodosQuery);
 // }
 
 // Example: Getting completed todos
-// export async function getCompletedTodos(): Promise<ToDo[]> {
+// export async function getCompletedTodos(): Promise<Todo[]> {
 //   try {
-//     return await getToDos(completedTodosQuery);
+//     return await getTodos(completedTodosQuery);
 //   } catch (error) {
 //     if (
 //       error instanceof ValidationError ||
@@ -108,9 +108,9 @@ export async function toggleTodoStatus(
 // }
 
 // Example: Getting incomplete todos
-// export async function getIncompleteTodos(): Promise<ToDo[]> {
+// export async function getIncompleteTodos(): Promise<Todo[]> {
 //   try {
-//     return await getToDos(incompleteTodosQuery);
+//     return await getTodos(incompleteTodosQuery);
 //   } catch (error) {
 //     if (
 //       error instanceof ValidationError ||

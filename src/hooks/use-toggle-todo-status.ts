@@ -1,5 +1,5 @@
 import { toggleTodoStatus } from "@/services/todo-service";
-import type { ToDo } from "@/types/todo";
+import type { Todo } from "@/types/todo";
 import { handleError } from "@/utils/error-handler";
 import confetti from "canvas-confetti";
 import { useState } from "react";
@@ -8,7 +8,7 @@ import { toast } from "sonner";
 export function useToggleTodoStatus() {
   const [isToggling, setIsToggling] = useState(false);
 
-  async function toggleStatus(todo: ToDo) {
+  async function toggleStatus(todo: Todo) {
     if (isToggling) return;
 
     setIsToggling(true);
@@ -24,7 +24,7 @@ export function useToggleTodoStatus() {
   }
 
   async function updateTodoStatus(
-    todo: ToDo,
+    todo: Todo,
   ): Promise<"completed" | "incomplete"> {
     await toggleTodoStatus(todo.id, todo.status);
     return todo.status === "completed" ? "incomplete" : "completed";

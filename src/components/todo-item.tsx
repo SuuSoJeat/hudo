@@ -1,18 +1,18 @@
 "use client";
 
 import { useToggleTodoStatus } from "@/hooks/use-toggle-todo-status";
-import type { ToDo } from "@/types/todo";
+import type { Todo } from "@/types/todo";
 import { Checkbox } from "./ui/checkbox";
 
 interface TodoItemProps {
-  todo: ToDo;
-  onClick: (todo: ToDo) => void;
+  todo: Todo;
+  onClick: (todo: Todo) => void;
 }
 
 export function TodoItem({ todo, onClick }: TodoItemProps) {
   const { toggleStatus, isToggling } = useToggleTodoStatus();
 
-  function handleToggleStatus(todo: ToDo) {
+  function handleToggleStatus(todo: Todo) {
     toggleStatus(todo);
   }
 

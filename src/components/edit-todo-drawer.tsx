@@ -8,13 +8,13 @@ import {
   DrawerHeader,
   DrawerTitle,
 } from "@/components/ui/drawer";
-import type { ToDo } from "@/types/todo";
+import type { Todo } from "@/types/todo";
 import { Pencil } from "lucide-react";
 import { TodoForm } from "./todo-form";
 import { Button } from "./ui/button";
 
 type TodoDrawerProps = {
-  todo: ToDo;
+  todo: Todo;
   isOpen: boolean;
   onClose: () => void;
 };

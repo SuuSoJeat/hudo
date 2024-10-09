@@ -1,8 +1,8 @@
 import {
   getQueryConstraintsForTodoFilter,
-  subscribeToDoCol,
+  subscribeTodoCol,
 } from "@/services/todo-service";
-import type { ToDo, TodoFilter } from "@/types/todo";
+import type { Todo, TodoFilter } from "@/types/todo";
 import { handleError } from "@/utils/error-handler";
 import { useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
@@ -15,7 +15,7 @@ import { useAsyncState } from "./use-async-state";
 export function useLiveTodos() {
   const searchParams = useSearchParams();
   const filter = searchParams.get("filter") as TodoFilter;
-  const [todos, setTodos] = useState<ToDo[]>([]);
+  const [todos, setTodos] = useState<Todo[]>([]);
   const { isLoading, isError, error, setLoading, setError, reset } =
     useAsyncState(true);
 
@@ -31,7 +31,7 @@ export function useLiveTodos() {
   useEffect(() => {
     reset(true);
 
-    const unsubscribe = subscribeToDoCol(
+    const unsubscribe = subscribeTodoCol(
       (data) => {
         setTodos(data);
         setLoading(false);

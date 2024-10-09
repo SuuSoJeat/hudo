@@ -1,7 +1,7 @@
 "use client";
 
-import { addToDo, updateToDo } from "@/services/todo-service";
-import { type ToDo, toDoSchema } from "@/types/todo";
+import { addTodo, updateTodo } from "@/services/todo-service";
+import { type Todo, todoSchema } from "@/types/todo";
 import { handleError } from "@/utils/error-handler";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useCallback } from "react";
@@ -14,8 +14,8 @@ import { Textarea } from "./ui/textarea";
 
 interface TodoFormProps {
   mode: "create" | "edit" | "read-only";
-  todo?: ToDo;
-  onSubmitted: (data: ToDo) => void;
+  todo?: Todo;
+  onSubmitted: (data: Todo) => void;
   children?: React.ReactNode;
 }
 
@@ -25,8 +25,8 @@ export const TodoForm: React.FC<TodoFormProps> = ({
   onSubmitted,
   children,
 }) => {
-  const form = useForm<ToDo>({
-    resolver: zodResolver(toDoSchema),
+  const form = useForm<Todo>({
+    resolver: zodResolver(todoSchema),
     defaultValues:
       mode === "create"
         ? {
@@ -42,7 +42,7 @@ export const TodoForm: React.FC<TodoFormProps> = ({
   });
 
   const onSubmit = useCallback(
-    async (data: ToDo) => {
+    async (data: Todo) => {
       try {
         const sanitizedData = {
           ...data,
@@ -51,12 +51,12 @@ export const TodoForm: React.FC<TodoFormProps> = ({
         };
 
         if (mode === "edit" && todo) {
-          await updateToDo(todo.id, sanitizedData);
+          await updateTodo(todo.id, sanitizedData);
           toast.success("Todo updated", {
             description: "Your task has been updated.",
           });
         } else if (mode === "create") {
-          await addToDo(sanitizedData);
+          await addTodo(sanitizedData);
           toast.success("Todo added", {
             description: "New task added to your list.",
           });
