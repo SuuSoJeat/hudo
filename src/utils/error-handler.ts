@@ -7,7 +7,10 @@ export interface ErrorHandlerOptions {
   context?: string;
 }
 
-export function handleError(error: Error, options: ErrorHandlerOptions = {}) {
+export function handleError(
+  error: Error | unknown,
+  options: ErrorHandlerOptions = {},
+) {
   const { logError = true, showToast = true, context = "Operation" } = options;
 
   if (logError) {
@@ -15,8 +18,12 @@ export function handleError(error: Error, options: ErrorHandlerOptions = {}) {
   }
 
   if (showToast) {
+    let errorMessage = "An unknown error occurred";
+    if (error instanceof Error) {
+      errorMessage = error.message;
+    }
     toast.error(`${context} error`, {
-      description: error.message,
+      description: errorMessage,
     });
   }
 
