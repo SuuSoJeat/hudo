@@ -10,11 +10,11 @@ import { useLiveTodos } from "@/hooks/use-live-todos";
 import type React from "react";
 import { Skeleton } from "./ui/skeleton";
 
-type ToDoCounterProps = {
+type TodoCounterProps = {
   className?: string | undefined;
 };
 
-export const ToDoCounter: React.FC<ToDoCounterProps> = ({ className }) => {
+export const TodoCounter: React.FC<TodoCounterProps> = ({ className }) => {
   const {
     count: allTodoCount,
     todos,

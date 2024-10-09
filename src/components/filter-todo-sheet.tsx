@@ -10,7 +10,7 @@ import {
   SheetTrigger,
 } from "./ui/sheet";
 
-export function FilterTodoSheet() {
+export const FilterTodoSheet = () => {
   return (
     <Sheet modal={false}>
       <SheetTrigger asChild>
@@ -39,4 +39,4 @@ export function FilterTodoSheet() {
       </SheetContent>
     </Sheet>
   );
-}
+};
