@@ -7,11 +7,7 @@ import {
   DrawerHeader,
   DrawerTitle,
 } from "@/components/ui/drawer";
-import {
-  deleteToDo,
-  subscribeToDoDoc,
-  toggleTodoStatus,
-} from "@/services/todo-service";
+import { deleteToDo, subscribeToDoDoc } from "@/services/todo-service";
 import type { ToDo } from "@/types/todo";
 import { handleError } from "@/utils/error-handler";
 import { Pencil, Trash } from "lucide-react";
@@ -20,6 +16,7 @@ import { toast } from "sonner";
 import { DeleteTodoConfirmation } from "./delete-todo-confirmation";
 import { EditTodoDrawer } from "./edit-todo-drawer";
 
+import { useToggleTodoStatus } from "@/hooks/use-toggle-todo-status";
 import { Button } from "./ui/button";
 import { Checkbox } from "./ui/checkbox";
 
@@ -36,6 +33,7 @@ export const ViewTodoDrawer: React.FC<TodoDrawerProps> = ({
 }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [liveTodo, setLiveTodo] = useState<ToDo>(todo);
+  const { toggleStatus, isToggling } = useToggleTodoStatus();
 
   useEffect(() => {
     const unsubscribe = subscribeToDoDoc(
@@ -50,11 +48,7 @@ export const ViewTodoDrawer: React.FC<TodoDrawerProps> = ({
   }, [todo]);
 
   const handleToggleStatus = () => {
-    try {
-      toggleTodoStatus(todo.id, liveTodo.status);
-    } catch (error) {
-      handleError(error);
-    }
+    toggleStatus(liveTodo);
   };
 
   const handleDelete = () => {
@@ -110,6 +104,7 @@ export const ViewTodoDrawer: React.FC<TodoDrawerProps> = ({
               <Checkbox
                 checked={liveTodo.status === "completed"}
                 onCheckedChange={handleToggleStatus}
+                disabled={isToggling}
               />
               <span className="text-lg font-semibold break-words">
                 {liveTodo.title}

@@ -1,9 +1,7 @@
 "use client";
 
-import { toggleTodoStatus } from "@/services/todo-service";
+import { useToggleTodoStatus } from "@/hooks/use-toggle-todo-status";
 import type { ToDo } from "@/types/todo";
-import { handleError } from "@/utils/error-handler";
-import { toast } from "sonner";
 import { Checkbox } from "./ui/checkbox";
 
 interface TodoItemProps {
@@ -12,19 +10,10 @@ interface TodoItemProps {
 }
 
 export function TodoItem({ todo, onClick }: TodoItemProps) {
-  async function handleToggleStatus(todo: ToDo) {
-    try {
-      await toggleTodoStatus(todo.id, todo.status);
-      const newStatus =
-        todo.status === "completed" ? "incomplete" : "completed";
-      const message =
-        newStatus === "completed"
-          ? "Great job! Task completed."
-          : "Task marked as incomplete. Keep going!";
-      toast.success(message);
-    } catch (error) {
-      handleError(error);
-    }
+  const { toggleStatus, isToggling } = useToggleTodoStatus();
+
+  function handleToggleStatus(todo: ToDo) {
+    toggleStatus(todo);
   }
 
   const handleOnClick = () => {
@@ -47,6 +36,7 @@ export function TodoItem({ todo, onClick }: TodoItemProps) {
             checked={todo.status === "completed"}
             onCheckedChange={() => handleToggleStatus(todo)}
             onClick={(e) => e.stopPropagation()}
+            disabled={isToggling}
             aria-label={`Mark todo "${todo.title}" as ${todo.status === "completed" ? "incomplete" : "completed"}`}
           />
           <div className="flex flex-col">
