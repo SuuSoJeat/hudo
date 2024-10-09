@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
@@ -20,6 +20,12 @@ export const metadata: Metadata = {
   description: APP.DESCRIPTION,
   keywords: APP.KEYWORDS,
   authors: APP.AUTHORS,
+};
+
+export const viewport: Viewport = {
+  userScalable: false,
+  maximumScale: 1,
+  minimumScale: 1,
 };
 
 export default function RootLayout({
