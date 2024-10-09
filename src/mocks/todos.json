@@ -1,0 +1,32 @@
+[
+  {
+    "id": "1",
+    "title": "Complete project proposal",
+    "description": "Draft and finalize the project proposal for the new client",
+    "status": "incomplete"
+  },
+  {
+    "id": "2",
+    "title": "Review code changes",
+    "description": "Go through the pull requests and provide feedback",
+    "status": "incomplete"
+  },
+  {
+    "id": "3",
+    "title": "Update documentation",
+    "description": "Revise the API documentation with the latest changes",
+    "status": "completed"
+  },
+  {
+    "id": "4",
+    "title": "Fix bug in login flow",
+    "description": "Investigate and resolve the issue with user authentication",
+    "status": "incomplete"
+  },
+  {
+    "id": "5",
+    "title": "Prepare for team meeting",
+    "description": "Gather progress updates and create agenda for weekly sync",
+    "status": "completed"
+  }
+]
