@@ -9,7 +9,7 @@ export const AppBar: React.FC<AppBarProps> = ({ className, children }) => {
   return (
     <div
       role="banner"
-      className={`flex justify-between px-4 py-3 bg-transparent rounded-b-[var(--radius)] backdrop-blur border-b border-border shadow-sm ${className ?? ""}`}
+      className={`flex justify-between px-4 py-3 bg-transparent rounded-b-lg backdrop-blur border-b border-border shadow-sm ${className ?? ""}`}
     >
       {children}
     </div>
