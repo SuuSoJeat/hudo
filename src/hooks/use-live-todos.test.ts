@@ -28,14 +28,14 @@ describe("useLiveTodos", () => {
       return vi.fn(); // Unsubscribe function
     });
     (
-      todoService.subscribeToToDos as ReturnType<typeof vi.fn>
+      todoService.subscribeToDoCol as ReturnType<typeof vi.fn>
     ).mockImplementation(mockSubscribe);
 
     const { result } = renderHook(() => useLiveTodos());
 
     // Check initial loading state
     expect(result.current.isLoading).toBe(true);
-    expect(todoService.subscribeToToDos).toHaveBeenCalled();
+    expect(todoService.subscribeToDoCol).toHaveBeenCalled();
 
     // Wait for state updates
     await act(async () => {
@@ -55,7 +55,7 @@ describe("useLiveTodos", () => {
       return vi.fn(); // Unsubscribe function
     });
     (
-      todoService.subscribeToToDos as ReturnType<typeof vi.fn>
+      todoService.subscribeToDoCol as ReturnType<typeof vi.fn>
     ).mockImplementation(mockSubscribe);
 
     const { result } = renderHook(() => useLiveTodos());
@@ -85,7 +85,7 @@ describe("useLiveTodos", () => {
     expect(todoService.getQueryConstraintsForTodoFilter).toHaveBeenCalledWith(
       "completed",
     );
-    expect(todoService.subscribeToToDos).toHaveBeenCalledWith(
+    expect(todoService.subscribeToDoCol).toHaveBeenCalledWith(
       expect.any(Function),
       expect.any(Function),
       ["mockConstraint"],
@@ -94,7 +94,7 @@ describe("useLiveTodos", () => {
 
   it("should unsubscribe when unmounted", () => {
     const unsubscribeMock = vi.fn();
-    (todoService.subscribeToToDos as ReturnType<typeof vi.fn>).mockReturnValue(
+    (todoService.subscribeToDoCol as ReturnType<typeof vi.fn>).mockReturnValue(
       unsubscribeMock,
     );
 

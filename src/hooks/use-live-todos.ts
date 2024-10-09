@@ -1,6 +1,6 @@
 import {
   getQueryConstraintsForTodoFilter,
-  subscribeToToDos,
+  subscribeToDoCol,
 } from "@/services/todo-service";
 import type { ToDo, TodoFilter } from "@/types/todo";
 import { handleError } from "@/utils/error-handler";
@@ -31,7 +31,7 @@ export function useLiveTodos() {
   useEffect(() => {
     reset(true);
 
-    const unsubscribe = subscribeToToDos(
+    const unsubscribe = subscribeToDoCol(
       (data) => {
         setTodos(data);
         setLoading(false);

@@ -19,7 +19,8 @@ const todoService = createFirestoreService({
 });
 
 export const {
-  subscribe: subscribeToToDos,
+  subscribeCol: subscribeToDoCol,
+  subscribeDoc: subscribeToDoDoc,
   getAll: getToDos,
   add: addToDo,
   update: updateToDo,

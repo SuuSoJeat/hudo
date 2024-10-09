@@ -43,7 +43,7 @@ export function createFirestoreService<T extends z.ZodTypeAny>({
    * Subscribes to real-time updates of the collection.
    * Filters out invalid documents and reports errors.
    */
-  function subscribe(
+  function subscribeCol(
     onData: (items: DataWithId<T>[]) => void,
     onError: (error: FirestoreError | ValidationError) => void,
     queryConstraints: QueryConstraint[] = [],
@@ -70,6 +70,43 @@ export function createFirestoreService<T extends z.ZodTypeAny>({
           return acc;
         }, []);
         onData(validItems);
+      },
+      onError,
+    );
+  }
+
+  /**
+   * Subscribes to real-time updates of a document.
+   * Filters out invalid document and reports errors.
+   */
+  function subscribeDoc(
+    id: string,
+    onData: (item: DataWithId<T> | null) => void,
+    onError: (error: FirestoreError | ValidationError) => void,
+  ): () => void {
+    const docRef = doc(collectionRef, id);
+    return onSnapshot(
+      docRef,
+      (snapshot) => {
+        if (snapshot.exists()) {
+          const item = docToItem(snapshot);
+          const parsedItem = schemaWithId.safeParse(item);
+          if (parsedItem.success) {
+            onData(parsedItem.data);
+          } else {
+            logger.warn(
+              `Invalid document data for ID ${id}: ${parsedItem.error.message}`,
+            );
+            onError(
+              new ValidationError(
+                `Invalid document data for ID ${id}: ${parsedItem.error.message}`,
+              ),
+            );
+            onData(null);
+          }
+        } else {
+          onData(null);
+        }
       },
       onError,
     );
@@ -145,7 +182,8 @@ export function createFirestoreService<T extends z.ZodTypeAny>({
   }
 
   return {
-    subscribe,
+    subscribeCol,
+    subscribeDoc,
     getAll,
     add,
     update,

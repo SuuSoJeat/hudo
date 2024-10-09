@@ -8,7 +8,8 @@ import {
   deleteToDo,
   getQueryConstraintsForTodoFilter,
   getToDos,
-  subscribeToToDos,
+  subscribeToDoCol,
+  subscribeToDoDoc,
   toggleTodoStatus,
   updateToDo,
 } from "./todo-service";
@@ -19,7 +20,8 @@ vi.mock("./firestore-service", () => ({
     getAll: vi.fn(),
     update: vi.fn(),
     remove: vi.fn(),
-    subscribe: vi.fn(),
+    subscribeCol: vi.fn(),
+    subscribeDoc: vi.fn(),
   })),
 }));
 
@@ -154,18 +156,34 @@ describe("todoService", () => {
     });
   });
 
-  describe("subscribeToToDos", () => {
+  describe("subscribeToDoCol", () => {
     it("should subscribe to todos successfully", () => {
       const onData = vi.fn();
       const onError = vi.fn();
       const unsubscribe = vi.fn();
 
-      vi.mocked(subscribeToToDos).mockReturnValue(unsubscribe);
+      vi.mocked(subscribeToDoCol).mockReturnValue(unsubscribe);
 
-      const result = subscribeToToDos(onData, onError, []);
+      const result = subscribeToDoCol(onData, onError);
 
       expect(result).toBe(unsubscribe);
-      expect(subscribeToToDos).toHaveBeenCalledWith(onData, onError, []);
+      expect(subscribeToDoCol).toHaveBeenCalledWith(onData, onError);
+    });
+  });
+
+  describe("subscribeToDoDoc", () => {
+    it("should subscribe to a specific todo document", () => {
+      const todoId = "123";
+      const onData = vi.fn();
+      const onError = vi.fn();
+      const unsubscribe = vi.fn();
+
+      vi.mocked(subscribeToDoDoc).mockReturnValue(unsubscribe);
+
+      const result = subscribeToDoDoc(todoId, onData, onError);
+
+      expect(result).toBe(unsubscribe);
+      expect(subscribeToDoDoc).toHaveBeenCalledWith(todoId, onData, onError);
     });
   });
 

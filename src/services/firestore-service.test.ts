@@ -5,6 +5,7 @@ import type { PartialData } from "@/utils/zod-schema";
 import {
   type DocumentData,
   type DocumentReference,
+  type DocumentSnapshot,
   type Firestore,
   type QuerySnapshot,
   deleteDoc,
@@ -50,7 +51,7 @@ describe("FirestoreService", () => {
     vi.clearAllMocks();
   });
 
-  describe("subscribe", () => {
+  describe("subscribeCol", () => {
     it("should call onData with valid data", () => {
       const mockSnapshot = {
         docs: [
@@ -69,7 +70,7 @@ describe("FirestoreService", () => {
         return vi.fn();
       });
 
-      service.subscribe(onData, onError);
+      service.subscribeCol(onData, onError);
 
       expect(onData).toHaveBeenCalledWith([
         { id: "1", name: "John", age: 30 },
@@ -100,12 +101,90 @@ describe("FirestoreService", () => {
         return vi.fn();
       });
 
-      service.subscribe(onData, onError);
+      service.subscribeCol(onData, onError);
 
       expect(onData).toHaveBeenCalledWith([{ id: "2", name: "Jane", age: 25 }]);
       expect(onError).toHaveBeenCalledWith(expect.any(ValidationError));
       expect(loggerWarnMock).toHaveBeenCalledWith(
         expect.stringContaining("Skipping invalid item with ID 1"),
+      );
+
+      loggerWarnMock.mockRestore();
+    });
+  });
+
+  describe("subscribeDoc", () => {
+    it("should handle valid document data correctly", () => {
+      const mockSnapshot = {
+        exists: () => true,
+        id: "1",
+        data: () => ({ name: "John", age: 30 }),
+      } as unknown as DocumentSnapshot<DocumentData>;
+
+      const onData = vi.fn();
+      const onError = vi.fn();
+
+      vi.mocked(onSnapshot).mockImplementation((_, callback) => {
+        (callback as (snapshot: DocumentSnapshot<DocumentData>) => void)(
+          mockSnapshot,
+        );
+        return vi.fn();
+      });
+
+      service.subscribeDoc("1", onData, onError);
+
+      expect(onData).toHaveBeenCalledWith({ id: "1", name: "John", age: 30 });
+      expect(onError).not.toHaveBeenCalled();
+    });
+
+    it("should handle non-existent document correctly", () => {
+      const mockSnapshot = {
+        exists: () => false,
+      } as unknown as DocumentSnapshot<DocumentData>;
+
+      const onData = vi.fn();
+      const onError = vi.fn();
+
+      vi.mocked(onSnapshot).mockImplementation((_, callback) => {
+        (callback as (snapshot: DocumentSnapshot<DocumentData>) => void)(
+          mockSnapshot,
+        );
+        return vi.fn();
+      });
+
+      service.subscribeDoc("nonexistent", onData, onError);
+
+      expect(onData).toHaveBeenCalledWith(null);
+      expect(onError).not.toHaveBeenCalled();
+    });
+
+    it("should handle invalid document data correctly", () => {
+      const mockSnapshot = {
+        exists: () => true,
+        id: "1",
+        data: () => ({ name: "John", age: "thirty" }),
+      } as unknown as DocumentSnapshot<DocumentData>;
+
+      const onData = vi.fn();
+      const onError = vi.fn();
+
+      const loggerWarnMock = vi
+        .spyOn(logger, "warn")
+        .mockImplementation(() => {});
+
+      vi.mocked(onSnapshot).mockImplementation((_, callback) => {
+        (callback as (snapshot: DocumentSnapshot<DocumentData>) => void)(
+          mockSnapshot,
+        );
+        return vi.fn();
+      });
+
+      service.subscribeDoc("1", onData, onError);
+
+      expect(onData).toHaveBeenCalledWith(null);
+      expect(onError).toHaveBeenCalledWith(expect.any(ValidationError));
+      expect(loggerWarnMock).toHaveBeenCalledWith(
+        expect.stringContaining("Invalid document data for ID 1"),
       );
 
       loggerWarnMock.mockRestore();

@@ -14,10 +14,15 @@ export type FirestoreServiceOptions<T extends z.ZodTypeAny> = {
 };
 
 export type FirestoreService<T extends z.ZodTypeAny> = {
-  subscribe: (
+  subscribeCol: (
     onData: (items: DataWithId<T>[]) => void,
     onError: (error: FirestoreError | ValidationError) => void,
     queryConstraints?: QueryConstraint[],
+  ) => () => void;
+  subscribeDoc: (
+    id: string,
+    onData: (item: DataWithId<T> | null) => void,
+    onError: (error: FirestoreError | ValidationError) => void,
   ) => () => void;
   getAll: (queryConstraints?: QueryConstraint[]) => Promise<DataWithId<T>[]>;
   add: (data: z.infer<T>) => Promise<string>;
