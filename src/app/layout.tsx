@@ -24,7 +24,7 @@ export const metadata: Metadata = {
 
 export const viewport: Viewport = {
   userScalable: false,
-  maximumScale: 1,
+  maximumScale: 5,
   minimumScale: 1,
 };
 

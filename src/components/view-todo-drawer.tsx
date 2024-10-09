@@ -69,7 +69,11 @@ export const ViewTodoDrawer: React.FC<TodoDrawerProps> = ({
 
   return (
     <>
-      <Drawer open={isOpen && !isEditing} onOpenChange={onClose}>
+      <Drawer
+        repositionInputs={false}
+        open={isOpen && !isEditing}
+        onOpenChange={onClose}
+      >
         <DrawerContent className="max-w-3xl mx-auto rounded-t-lg flex flex-col max-h-[99vh]">
           <DrawerHeader className="border-b px-4 py-4 flex justify-between items-center sticky top-0 bg-background z-10">
             <DrawerTitle className="text-lg font-semibold">Details</DrawerTitle>

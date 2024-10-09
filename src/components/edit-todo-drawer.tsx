@@ -25,7 +25,7 @@ export const EditTodoDrawer: React.FC<TodoDrawerProps> = ({
   onClose,
 }) => {
   return (
-    <Drawer open={isOpen} onOpenChange={onClose}>
+    <Drawer repositionInputs={false} open={isOpen} onOpenChange={onClose}>
       <DrawerContent className="max-w-3xl mx-auto rounded-t-lg flex flex-col max-h-[99vh]">
         <DrawerHeader className="border-b px-4 py-4 flex justify-between items-center sticky top-0 bg-background z-10">
           <DrawerTitle className="text-lg font-semibold">

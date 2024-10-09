@@ -26,7 +26,7 @@ export const CreateTodoDrawer: React.FC<CreateTodoDrawerProps> = ({
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <Drawer open={isOpen} onOpenChange={setIsOpen}>
+    <Drawer repositionInputs={false} open={isOpen} onOpenChange={setIsOpen}>
       <DrawerTrigger asChild>
         {children ?? (
           <Button size="sm" aria-label="Create a todo" className="rounded-lg">

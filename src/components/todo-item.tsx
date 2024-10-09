@@ -47,6 +47,7 @@ export function TodoItem({ todo, onClick }: TodoItemProps) {
             checked={todo.status === "completed"}
             onCheckedChange={() => handleToggleStatus(todo)}
             onClick={(e) => e.stopPropagation()}
+            aria-label={`Mark todo "${todo.title}" as ${todo.status === "completed" ? "incomplete" : "completed"}`}
           />
           <div className="flex flex-col">
             <span

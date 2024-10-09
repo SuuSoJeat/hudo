@@ -30,7 +30,7 @@ export const FormSubmit: React.FC<FormSubmitProps> = ({
   className,
 }) => {
   const {
-    formState: { isValid, isSubmitting },
+    formState: { isValid, isSubmitting, isDirty },
   } = useFormContext();
 
   if (React.isValidElement(children) && children.type === "button") {
@@ -45,7 +45,7 @@ export const FormSubmit: React.FC<FormSubmitProps> = ({
   return (
     <Button
       type="submit"
-      disabled={!isValid || isSubmitting}
+      disabled={!isDirty || !isValid || isSubmitting}
       className={`${className}`}
     >
       {isSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}

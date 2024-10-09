@@ -4,6 +4,7 @@ import { FilterTodoSheet } from "@/components/filter-todo-sheet";
 import { TodoCounter } from "@/components/todo-counter";
 import { TodoList } from "@/components/todo-list";
 import { APP } from "@/constants/app";
+import { Suspense } from "react";
 
 export default function Home() {
   return (
@@ -12,7 +13,9 @@ export default function Home() {
         <AppBar>
           <AppBarTitle>
             <h2 className="text-xl font-bold select-none">{APP.TITLE}</h2>
-            <TodoCounter />
+            <Suspense>
+              <TodoCounter />
+            </Suspense>
           </AppBarTitle>
           <AppBarActions>
             <FilterTodoSheet />
@@ -21,7 +24,9 @@ export default function Home() {
         </AppBar>
       </header>
       <main>
-        <TodoList />
+        <Suspense>
+          <TodoList />
+        </Suspense>
       </main>
     </div>
   );
