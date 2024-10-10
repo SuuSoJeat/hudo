@@ -29,7 +29,7 @@ export const CreateTodoDrawer: React.FC<CreateTodoDrawerProps> = ({
     <Drawer repositionInputs={false} open={isOpen} onOpenChange={setIsOpen}>
       <DrawerTrigger asChild>
         {children ?? (
-          <Button size="sm" aria-label="Create a todo" className="rounded-lg">
+          <Button size="sm" aria-label="New todo" className="rounded-lg">
             <PlusIcon className="h-4 w-4 mr-1" />
             New Todo
           </Button>

@@ -41,7 +41,7 @@ export function EmptyTodoState() {
             <Button
               variant="outline"
               size="sm"
-              aria-label="Create a todo"
+              aria-label="New todo"
               className="rounded-lg"
             >
               <PlusIcon className="h-4 w-4 mr-1" />

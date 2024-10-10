@@ -8,12 +8,15 @@
 
 HuDo is a collaborative task management application designed for advancing human knowledge. It provides a simple and intuitive interface for managing todos with real-time updates.
 
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-Visit%20Site-blue)](https://hudo.vercel.app/)
+
 ## Table of Contents
 
 - [Features](#features)
 - [Technologies Used](#technologies-used)
 - [Setup](#setup)
 - [Running the Application](#running-the-application)
+- [Deployment](#deployment)
 - [Firestore Data Schema](#firestore-data-schema)
 - [Testing](#testing)
 - [Contributing](#contributing)
@@ -76,6 +79,10 @@ HuDo is a collaborative task management application designed for advancing human
    ```
 
 2. Open your browser and navigate to `http://localhost:3000`
+
+## Deployment
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/git/external?repository-url=https://github.com/SuuSoJeat/hudo/tree/main)
 
 ## Firestore Data Schema
 
