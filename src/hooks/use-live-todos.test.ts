@@ -88,7 +88,7 @@ describe("useLiveTodos", () => {
     expect(todoService.subscribeTodoCol).toHaveBeenCalledWith(
       expect.any(Function),
       expect.any(Function),
-      ["mockConstraint"],
+      expect.arrayContaining(["mockConstraint"]),
     );
   });
 

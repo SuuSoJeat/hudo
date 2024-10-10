@@ -4,6 +4,7 @@ import {
 } from "@/services/todo-service";
 import type { Todo, TodoFilter } from "@/types/todo";
 import { handleError } from "@/utils/error-handler";
+import { orderBy } from "firebase/firestore";
 import { useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 import { useAsyncState } from "./use-async-state";
@@ -31,13 +32,15 @@ export function useLiveTodos() {
   useEffect(() => {
     reset(true);
 
+    const queryConstraints = getQueryConstraintsForTodoFilter(filter) ?? [];
+
     const unsubscribe = subscribeTodoCol(
       (data) => {
         setTodos(data);
         setLoading(false);
       },
       handleSubscriptionError,
-      getQueryConstraintsForTodoFilter(filter),
+      [...queryConstraints, orderBy("title")],
     );
 
     return unsubscribe;

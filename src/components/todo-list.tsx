@@ -40,7 +40,7 @@ export function TodoList() {
       <div className="space-y-2 mt-3">
         {Array.from({ length: 5 }, (_, index) => (
           // biome-ignore lint/suspicious/noArrayIndexKey: Using index is enough here.
-          <Skeleton key={index} className="mx-4 h-16" />
+          <Skeleton data-testid="skeleton" key={index} className="mx-4 h-16" />
         ))}
       </div>
     ),
@@ -55,7 +55,7 @@ export function TodoList() {
         <p className="text-red-600 font-semibold mb-2">
           Oops! Something went wrong
         </p>
-        <p className="text-red-500 text-center">
+        <p className="text-red-500 text-center break-all">
           {error?.message || "Failed to load todos"}
         </p>
       </div>
